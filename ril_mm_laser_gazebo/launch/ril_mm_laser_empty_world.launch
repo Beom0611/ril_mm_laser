@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="world_name" default="worlds/empty.world"/>
+
+
+  <arg name="debug" default="false"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/> <!-- world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include file="$(find ril_mm_laser_gazebo)/launch/spawn_ril_mm_laser.launch">
+
+
+  </include>
+
+  <include file="$(find ril_mm_laser_moveit_config)/launch/move_group.launch">
+    <arg name="debug" default="$(arg debug)" />
+  </include>
+ <!-- <include file="$(find ril_mm_laser_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="debug" default="$(arg debug)" />
+    <arg name="rviz_config" default="true" />
+  </include> -->
+
+  <node pkg="ril_mm_laser_python" type="arm_base_pose3.py" name="arm_initial_pose"></node>
+<!--  <node pkg="ril_mm_laser_python" type="scan_manage.py" name="scan_setup"></node> -->
+  <node pkg="ril_mm_laser_python" type="object_spawn5.py" name="world_setup"></node>
+</launch>
